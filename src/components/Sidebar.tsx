@@ -34,11 +34,11 @@ const Image = ({ src, alt, width, height, priority, className }: any) => (
   />
 );
 
-export const Sidebar: React.FC = () => {
+export const Sidebar: React.FC<{ onToggleCopilot?: () => void }> = ({ onToggleCopilot }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = React.useState(false);
-  const { setAnalysisType } = useDataStore();
+  const { setAnalysisType, activeAnalysisType } = useDataStore();
 
   const handleNav = (path: string, id: string) => {
     if (id === 'analysis') {
@@ -70,23 +70,51 @@ export const Sidebar: React.FC = () => {
       </div>
 
       <nav className="sidebar-nav">
-        {menuItems.map((item) => (
-          <button
-            key={item.id}
-            className={`nav-item ${location.pathname === item.path ? 'active' : ''} ${item.type === 'ai' ? 'ai-item' : ''}`}
-            onClick={() => handleNav(item.path, item.id)}
-            title={isCollapsed ? item.label : ''}
+        {menuItems.map((item) => {
+          // Distinguish active state between Dashboard and Deep Analysis
+          const isActive = location.pathname === item.path && 
+            (item.path === '/workspace/dashboard' ? (item.id === 'analysis' ? activeAnalysisType === 'generic' : activeAnalysisType !== 'generic') : true);
+
+          return (
+            <button
+              key={item.id}
+              className={`flex flex-row items-center gap-4 px-4 py-3 w-full rounded-xl cursor-pointer group transition-all duration-200 border border-transparent ${
+                isActive 
+                  ? 'bg-[#0A0E17]/80 border-slate-700/50 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]' 
+                  : 'bg-transparent hover:bg-slate-800/30'
+              }`}
+              onClick={() => handleNav(item.path, item.id)}
+              title={isCollapsed ? item.label : ''}
+            >
+              <div className="item-icon flex flex-shrink-0 items-center justify-center">
+                <item.icon className={`w-5 h-5 ${isActive ? 'text-orange-500' : 'text-slate-500 group-hover:text-slate-300 transition-colors'}`} />
+              </div>
+              <div className="item-content flex flex-col items-start overflow-hidden">
+                <span className={`text-sm font-semibold tracking-wide truncate ${isActive ? 'text-white' : 'text-slate-400 group-hover:text-white transition-colors'}`}>
+                  {item.label}
+                </span>
+                <span className={`item-sub text-[10px] uppercase tracking-wider truncate ${isActive ? 'text-slate-400' : 'text-slate-600'}`}>
+                  {item.sub}
+                </span>
+              </div>
+              {item.type === 'ai' && (
+                <span className="ai-tag bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-[9px] font-bold px-1.5 py-0.5 rounded ml-auto flex items-center gap-1 flex-shrink-0">
+                  <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse shadow-[0_0_5px_#8b5cf6]"></span>
+                  AI
+                </span>
+              )}
+            </button>
+          );
+        })}
+        <div className="mt-4 px-2">
+          <button 
+            className="w-full py-2.5 bg-transparent rounded-lg text-indigo-400 border border-indigo-500/30 hover:bg-indigo-500/10 text-sm font-semibold tracking-wide transition-colors flex items-center justify-center gap-2"
+            onClick={onToggleCopilot}
           >
-            <div className="item-icon">
-              <item.icon size={20} />
-            </div>
-            <div className="item-content">
-              <span className="item-label">{item.label}</span>
-              <span className="item-sub">{item.sub}</span>
-            </div>
-            {item.type === 'ai' && <span className="ai-tag">AI</span>}
+            <Terminal size={16} />
+            {!isCollapsed && <span>OmniMind Copilot</span>}
           </button>
-        ))}
+        </div>
       </nav>
 
       <div className="sidebar-footer">

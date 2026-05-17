@@ -45,7 +45,7 @@ manager = ConnectionManager()
 # ---------------------------------------------------------
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"], # Must match your Next.js port exactly
+    allow_origins=["*"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -98,12 +98,7 @@ async def upload_file(file: UploadFile = File(...)):
         # Store both the dataframe and the physical file path
         active_sessions[session_id] = {"df": df, "file_path": file_path}
 
-        return {
-            "status": "success",
-            "message": "Data ingested successfully",
-            "columns": list(df.columns),
-            "row_count": len(df)
-        }
+        return {"status": "success", "filename": file.filename, "message": "Upload complete"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Error parsing CSV: {str(e)}")
 

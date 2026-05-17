@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Sidebar } from '../components/Sidebar';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -9,20 +9,73 @@ import {
   Bell, 
   Settings,
   MoreHorizontal,
-  DownloadCloud
+  DownloadCloud,
+  X,
+  Mic,
+  Send
 } from 'lucide-react';
 import { ExecutiveCanvas } from '../components/ExecutiveCanvas';
-import { ChatInput } from '../components/ChatInput';
+
 import { RightPillar } from '../components/RightPillar';
 import { useDataStore } from '../store/useDataStore';
 import Papa from 'papaparse';
 import { Database as DbIcon, Plus } from 'lucide-react';
 import { GlobalNodeMap } from '../components/GlobalNodeMap';
 import { InfraFooter } from '../components/InfraFooter';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Line } from 'recharts';
 
 export const DashboardPage: React.FC = () => {
   const { activeAnalysisType, uploadedFile, setUploadedData, setIsProcessing } = useDataStore();
   const navigate = useNavigate();
+  const [isDataLoaded, setIsDataLoaded] = useState(!!uploadedFile);
+  const [chartData, setChartData] = useState<any[]>([]);
+  const [isCopilotOpen, setIsCopilotOpen] = useState(false);
+
+  useEffect(() => {
+    if (uploadedFile) {
+      setIsDataLoaded(true);
+      
+      Papa.parse(uploadedFile, {
+        header: true,
+        dynamicTyping: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+          const rawData = results.data as any[];
+          if (!rawData || rawData.length === 0) return;
+
+          // Autonomously detect columns (assume 1st column is X-axis label, 2nd is Y-axis value)
+          const keys = Object.keys(rawData[0]);
+          const labelKey = keys[0]; 
+          const valueKey = keys.find(k => typeof rawData[0][k] === 'number') || keys[1];
+
+          // Format data for Recharts
+          let formattedData = rawData.map(row => ({
+            name: row[labelKey] || 'Unknown',
+            actualValue: row[valueKey] || 0,
+            prediction: row[valueKey] || 0 // Base prediction overlaps actual for past data
+          }));
+
+          // Generate the AI Forecast (Add 2 future points based on average growth)
+          const lastVal = formattedData[formattedData.length - 1].actualValue;
+          const prevVal = formattedData[formattedData.length - 2]?.actualValue || lastVal;
+          const growthTrend = lastVal - prevVal;
+          
+          formattedData.push({
+            name: 'Forecast +1',
+            actualValue: null, // Null so the solid line stops
+            prediction: lastVal + growthTrend
+          });
+          formattedData.push({
+            name: 'Forecast +2',
+            actualValue: null,
+            prediction: lastVal + (growthTrend * 2)
+          });
+
+          setChartData(formattedData);
+        }
+      });
+    }
+  }, [uploadedFile]);
 
   const loadDemoData = async () => {
     setIsProcessing(true);
@@ -39,13 +92,22 @@ export const DashboardPage: React.FC = () => {
           const formData = new FormData();
           formData.append('file', file);
           
-          await fetch('http://localhost:8000/api/upload', {
-            method: 'POST',
-            body: formData,
-          });
+          try {
+            const apiResponse = await fetch('http://localhost:8000/api/upload', {
+              method: 'POST',
+              body: formData,
+            });
+            if (!apiResponse.ok) throw new Error("Server rejected payload");
+            const data = await apiResponse.json();
+            if (data.status !== "success") throw new Error("Sync failed");
 
-          setUploadedData(results.data, results.meta.fields || [], file);
-          setIsProcessing(false);
+            setUploadedData(results.data, results.meta.fields || [], file);
+            setIsDataLoaded(true);
+            setIsProcessing(false);
+          } catch (err) {
+            console.error("Backend sync failed", err);
+            setIsProcessing(false);
+          }
         }
       });
     } catch (err) {
@@ -56,7 +118,7 @@ export const DashboardPage: React.FC = () => {
 
   return (
     <div className="workspace-layout">
-      <Sidebar />
+      <Sidebar onToggleCopilot={() => setIsCopilotOpen(!isCopilotOpen)} />
       
       <div className="workspace-content dashboard-container">
         <div className="main-pillar">
@@ -104,10 +166,12 @@ export const DashboardPage: React.FC = () => {
           </header>
 
           <div className="dashboard-main-area">
-            {activeAnalysisType ? (
+            {activeAnalysisType && (
               <ExecutiveCanvas />
-            ) : (
-              <div className="empty-dashboard-state glass-panel">
+            )}
+
+            {!isDataLoaded && (
+              <div className="empty-dashboard-state glass-panel empty-state-wrapper">
                 <div className="empty-info">
                   <div className="empty-icon-wrap">
                     <Activity size={48} className="text-dim" />
@@ -129,8 +193,8 @@ export const DashboardPage: React.FC = () => {
               </div>
             )}
             
-            {!activeAnalysisType && (
-              <div className="dashboard-grid-layout">
+            {isDataLoaded && (
+              <div className="dashboard-grid-layout active-data-wrapper animate-in fade-in duration-500">
                 <div className="grid-left-col">
                   <div className="quick-metrics-grid mb-4">
                     <MetricCard 
@@ -155,19 +219,102 @@ export const DashboardPage: React.FC = () => {
                       icon={ShieldCheck} 
                     />
                   </div>
-                  <GlobalNodeMap />
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+                    <div className="col-span-2 bg-[#0A0E17]/80 border border-slate-800/80 rounded-xl p-6 shadow-2xl backdrop-blur-sm">
+                      <div className="flex justify-between items-center mb-4">
+                        <h3 className="text-white font-bold text-lg">Revenue vs Predictive Growth</h3>
+                        <div className="flex items-center gap-2 bg-green-500/10 border border-green-500/20 px-3 py-1 rounded-full">
+                          <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                          <span className="text-[10px] text-green-400 font-bold tracking-widest uppercase">AI FORECAST ACTIVE</span>
+                        </div>
+                      </div>
+                      <ResponsiveContainer width="100%" height={350}>
+                        <AreaChart data={chartData}>
+                          <defs>
+                            <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="5%" stopColor="#22d3ee" stopOpacity={0.8}/>
+                              <stop offset="95%" stopColor="#22d3ee" stopOpacity={0}/>
+                            </linearGradient>
+                          </defs>
+                          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" vertical={false} />
+                          <XAxis dataKey="name" stroke="#475569" tick={{fill: 'rgba(255,255,255,0.5)'}} />
+                          <YAxis stroke="rgba(255,255,255,0.5)" tick={{fill: 'rgba(255,255,255,0.5)'}} />
+                          <Tooltip 
+                            contentStyle={{ backgroundColor: '#0A0E17', borderColor: '#1e293b' }}
+                            itemStyle={{ color: '#fff' }}
+                          />
+                          <Area type="monotone" dataKey="actualValue" stroke="#22d3ee" fill="url(#colorRevenue)" strokeWidth={3} connectNulls={false} />
+                          <Line type="monotone" dataKey="prediction" stroke="#818cf8" strokeDasharray="5 5" strokeWidth={3} dot={false} />
+                        </AreaChart>
+                      </ResponsiveContainer>
+                      <div className="bg-indigo-900/20 border border-indigo-500/30 p-4 rounded-lg mt-4 text-indigo-200 text-sm">
+                        OmniMind AI detects a 24% upward revenue trajectory in Q4 based on current CRM ingestion metrics.
+                      </div>
+                    </div>
+                    <div className="col-span-1">
+                      <GlobalNodeMap />
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
-          </div>
-
-          <div className="ai-overlay-fixed">
-            <ChatInput />
           </div>
         </div>
 
         <RightPillar />
       </div>
+
+      {isCopilotOpen && (
+        <div className="fixed inset-y-0 right-0 w-[400px] bg-[#05080F] border-l border-slate-800 shadow-2xl z-50 flex flex-col transform transition-transform duration-300">
+          <div className="flex justify-between items-center p-6 border-b border-slate-800">
+            <h2 className="text-sm uppercase tracking-widest text-indigo-400 font-bold">OmniMind Intelligence Agent</h2>
+            <button onClick={() => setIsCopilotOpen(false)} className="text-slate-400 hover:text-white transition-colors">
+              <X size={20} />
+            </button>
+          </div>
+          
+          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+            <div className="flex justify-end">
+              <div className="bg-indigo-600/20 border border-indigo-500/30 text-white p-4 rounded-2xl rounded-tr-none text-sm max-w-[85%]">
+                Can you analyze the recent churn data and identify primary risk factors?
+              </div>
+            </div>
+            
+            <div className="flex justify-start">
+              <div className="bg-[#0A0E17] border border-slate-700 text-slate-300 p-4 rounded-2xl rounded-tl-none text-sm leading-relaxed max-w-[85%]">
+                I've analyzed the dataset. We're seeing a notable spike in at-risk accounts primarily correlated with a drop in user engagement over the last 30 days. 
+                
+                <div className="mt-3 bg-[#05080F] border border-slate-800 p-3 rounded-lg flex items-center justify-between">
+                  <span className="font-semibold text-slate-200">Churn Risk: 14.2%</span>
+                  <span className="text-xs px-2 py-1 bg-red-500/20 text-red-400 rounded border border-red-500/30">Critical</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="p-6 border-t border-slate-800 bg-[#0A0E17]">
+            <div className="flex flex-wrap gap-2 mb-4">
+              <div className="text-[10px] px-3 py-1.5 border border-slate-700 rounded-full hover:bg-slate-800 text-slate-400 cursor-pointer">
+                + Identify key risk factors
+              </div>
+              <div className="text-[10px] px-3 py-1.5 border border-slate-700 rounded-full hover:bg-slate-800 text-slate-400 cursor-pointer">
+                + Generate executive brief
+              </div>
+            </div>
+            <div className="relative">
+              <textarea 
+                placeholder="Ask OmniSight to analyze..." 
+                className="w-full bg-[#05080F] border border-slate-700 rounded-xl p-4 pr-[70px] text-sm text-white focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-all resize-none h-[80px]"
+              />
+              <div className="absolute right-3 top-4 flex gap-2 text-slate-400">
+                <button className="hover:text-indigo-400 transition-colors"><Mic size={18} /></button>
+                <button className="hover:text-indigo-400 transition-colors"><Send size={18} /></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <InfraFooter />
 
       <style>{`

@@ -34,26 +34,44 @@ export const Dropzone: React.FC = () => {
       header: true,
       skipEmptyLines: true,
       complete: async (results) => {
-        // Upload to backend for Agentic analysis
         const formData = new FormData();
-        formData.append('file', file);
-        
+        formData.append("file", file); // MUST be "file"
+
         try {
-          await fetch('http://localhost:8000/api/upload', {
-            method: 'POST',
+          console.log("Initiating upload to http://localhost:8000/api/upload...");
+          const response = await fetch("http://localhost:8000/api/upload", {
+            method: "POST",
             body: formData,
           });
           
+          console.log("Server responded with status:", response.status);
+          
+          if (!response.ok) {
+            const errText = await response.text();
+            throw new Error(`Server Error ${response.status}: ${errText}`);
+          }
+
+          const data = await response.json();
+          console.log("Parsed server response:", data);
+
+          if (data.status !== "success") {
+            throw new Error("Payload mismatch: Status was not success");
+          }
+
+          // IF SUCCESS: Clear any UI errors and trigger the dashboard view
           clearInterval(interval);
           setProgress(100);
+          setError(null);
           
           setTimeout(() => {
             setUploadedData(results.data, results.meta.fields || [], file);
             navigate('/workspace/dashboard');
           }, 800);
-        } catch (err) {
+
+        } catch (error: any) {
+          console.error("UPLOAD PIPELINE FAILED:", error);
           clearInterval(interval);
-          setError('Backend sync failed. Is the server running?');
+          setError(`Sync failed: ${error.message}`);
           setIsProcessing(false);
         }
       },
