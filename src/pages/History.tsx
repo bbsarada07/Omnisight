@@ -7,7 +7,7 @@ export const HistoryPage: React.FC = () => {
     <div className="workspace-layout">
       <Sidebar />
       
-      <main className="workspace-content bg-[#F5F5F0]">
+      <main className="workspace-content bg-[#05080F] p-0 flex flex-col h-full overflow-hidden">
         <EditorialSearch />
       </main>
 

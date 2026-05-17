@@ -2,110 +2,136 @@ import React, { useState } from 'react';
 import { Search } from 'lucide-react';
 
 export const EditorialSearch: React.FC = () => {
+  const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState('ALL ASSETS');
 
-  const filters = [
-    'ALL ASSETS',
-    'CRITICAL THREATS',
-    'ACTIVE NODES',
-    'ARCHIVED'
-  ];
-
-  const mockResults = [
+  const queryData = [
     {
       id: 1,
-      label: 'SERVER NODE // AP-SOUTH-1',
-      title: 'Nexus DB Cluster',
-      status: 'active'
+      type: 'SERVER NODE',
+      region: 'AP-SOUTH-1',
+      name: 'Nexus DB Cluster',
+      status: 'ACTIVE'
     },
     {
       id: 2,
-      label: 'THREAT VECTOR // EXTERNAL',
-      title: 'DDoS Anomaly detected',
-      status: 'alert'
+      type: 'THREAT VECTOR',
+      region: 'EXTERNAL',
+      name: 'DDoS Anomaly detected',
+      status: 'ALERT'
     },
     {
       id: 3,
-      label: 'ASSET // US-EAST',
-      title: 'Main Ingestion Pipeline',
-      status: 'active'
+      type: 'ASSET',
+      region: 'US-EAST',
+      name: 'Main Ingestion Pipeline',
+      status: 'ACTIVE'
     },
     {
       id: 4,
-      label: 'SERVER NODE // EU-CENTRAL',
-      title: 'Backup Core',
-      status: 'active'
+      type: 'SERVER NODE',
+      region: 'EU-CENTRAL',
+      name: 'Backup Core',
+      status: 'ACTIVE'
     },
     {
       id: 5,
-      label: 'THREAT VECTOR // INTERNAL',
-      title: 'Unauthorized Access Attempt',
-      status: 'alert'
+      type: 'THREAT VECTOR',
+      region: 'INTERNAL',
+      name: 'Unauthorized Access Attempt',
+      status: 'ALERT'
     },
     {
       id: 6,
-      label: 'ASSET // GLOBAL',
-      title: 'Authentication Gateway',
-      status: 'active'
+      type: 'ASSET',
+      region: 'GLOBAL',
+      name: 'Authentication Gateway',
+      status: 'ACTIVE'
     }
   ];
 
+  const filteredData = queryData.filter(item => {
+    const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) || item.type.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesFilter = activeFilter === 'ALL ASSETS' ? true : 
+                          activeFilter === 'CRITICAL THREATS' ? item.status === 'ALERT' :
+                          activeFilter === 'ACTIVE NODES' ? item.status === 'ACTIVE' : true;
+    return matchesSearch && matchesFilter;
+  });
+
   return (
-    <div className="w-full max-w-6xl mx-auto bg-white border border-[#1A1A1A]/15 flex flex-col min-h-[700px] mt-10 rounded-none shadow-none">
+    <div className="flex-1 flex flex-col h-full bg-[#05080F] overflow-hidden">
+      
       {/* Task 2: The Command Search Header */}
-      <div className="flex items-center px-12 py-8 border-b border-[#1A1A1A]/15 bg-white rounded-none shadow-none">
-        <Search className="text-[#E63946] w-8 h-8 mr-6" />
+      <div className="flex items-center px-10 py-6 border-b border-slate-800/80 bg-[#0A0E17]/50">
+        <Search className="w-6 h-6 text-indigo-500 mr-4 shrink-0" />
         <input 
           type="text" 
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Query assets, threat vectors, or global regions..." 
-          className="flex-1 bg-transparent text-4xl font-light text-[#1A1A1A] placeholder:text-[#1A1A1A]/20 focus:outline-none rounded-none shadow-none"
+          className="flex-1 bg-transparent border-none outline-none text-2xl font-light text-white placeholder:text-slate-600 focus:ring-0 w-full" 
         />
       </div>
 
       {/* Task 3: The Architectural Filter Bar */}
-      <div className="flex border-b border-[#1A1A1A]/15 bg-[#F5F5F0] rounded-none shadow-none">
-        {filters.map((filter) => (
-          <div
-            key={filter}
-            onClick={() => setActiveFilter(filter)}
-            className={`px-8 py-4 border-r border-[#1A1A1A]/15 text-[10px] uppercase tracking-[0.2em] font-bold transition-colors cursor-pointer rounded-none shadow-none ${
-              activeFilter === filter 
-                ? 'bg-white text-[#1A1A1A] shadow-[inset_0_2px_0_#E63946]' 
-                : 'text-[#1A1A1A]/50 hover:bg-white hover:text-[#1A1A1A]'
-            }`}
-          >
-            {filter}
-          </div>
-        ))}
-      </div>
-
-      {/* Task 4: The Data Grid */}
-      <div className="grid grid-cols-3 bg-[#F5F5F0] flex-1 rounded-none shadow-none">
-        {mockResults.map((result, index) => {
-          // Determine borders carefully to avoid double borders.
-          // In a 3 column grid, the 3rd, 6th... elements do not need a right border if they touch the edge,
-          // but since the container has an outer border, we actually can just put border-r on 1st and 2nd cols.
-          const isLastInRow = (index + 1) % 3 === 0;
-
+      <div className="flex gap-8 border-b border-slate-800/80 bg-[#05080F] px-10 pt-4">
+        {['ALL ASSETS', 'CRITICAL THREATS', 'ACTIVE NODES', 'ARCHIVED'].map((filter) => {
+          const isActive = activeFilter === filter;
           return (
-            <div 
-              key={result.id}
-              className={`bg-white border-b border-[#1A1A1A]/15 p-8 hover:bg-[#F5F5F0] transition-colors cursor-pointer rounded-none shadow-none ${isLastInRow ? '' : 'border-r'}`}
+            <button
+              key={filter}
+              onClick={() => setActiveFilter(filter)}
+              className={`pb-4 text-[11px] uppercase tracking-widest font-bold cursor-pointer transition-colors relative outline-none ${
+                isActive ? 'text-indigo-400' : 'text-slate-500 hover:text-slate-300'
+              }`}
             >
-              <div className="text-[10px] uppercase tracking-[0.2em] text-[#1A1A1A]/40 mb-4 font-bold">
-                {result.label}
-              </div>
-              <div className="text-2xl font-medium tracking-tight text-[#1A1A1A] mb-2">
-                {result.title}
-              </div>
-              <div className="text-xs font-mono text-[#1A1A1A]/60 flex items-center gap-2">
-                <div className={`w-2 h-2 ${result.status === 'active' ? 'bg-green-500' : 'bg-[#E63946]'}`}></div>
-                {result.status.toUpperCase()}
-              </div>
-            </div>
+              {filter}
+              {isActive && (
+                <div className="absolute bottom-0 left-0 w-full h-[2px] bg-indigo-500 shadow-[0_0_8px_#6366f1]"></div>
+              )}
+            </button>
           );
         })}
+      </div>
+
+      {/* Task 4: The Stealth Glassmorphism Data Grid */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-10">
+          {filteredData.map((item) => (
+            <div 
+              key={item.id} 
+              className="bg-[#0A0E17]/80 backdrop-blur-sm border border-slate-800/80 p-5 rounded-xl hover:border-indigo-500/50 hover:bg-[#0A0E17] hover:shadow-[0_0_15px_rgba(99,102,241,0.1)] transition-all cursor-pointer group flex flex-col min-h-[160px]"
+            >
+              
+              {/* Task 5: Internal Card Typography */}
+              <div className="flex justify-between items-start mb-3 text-[10px] uppercase tracking-widest text-slate-500">
+                <span>{item.type}</span>
+                <span>{item.region}</span>
+              </div>
+              
+              <div className="text-lg font-medium text-slate-200 group-hover:text-white transition-colors mb-2">
+                {item.name}
+              </div>
+
+              <div className="text-xs text-slate-600 font-mono mb-4">
+                Last updated: Just now
+              </div>
+              
+              <div className="mt-auto pt-3 border-t border-slate-800/50 flex items-center gap-2 text-[10px] font-bold tracking-widest uppercase">
+                <span className="relative flex h-2 w-2">
+                  <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${item.status === 'ALERT' ? 'bg-red-400' : 'bg-emerald-400'}`}></span>
+                  <span className={`relative inline-flex rounded-full h-2 w-2 ${item.status === 'ALERT' ? 'bg-red-400' : 'bg-emerald-400'}`}></span>
+                </span>
+                <span className={`${item.status === 'ALERT' ? 'text-red-400' : 'text-emerald-400'}`}>
+                  {item.status}
+                </span>
+              </div>
+
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
 };
+
