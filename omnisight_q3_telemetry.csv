@@ -1,0 +1,151 @@
+Region,Product_Line,Revenue,Churn_Rate,Market_Share,Competitor_Growth,Anomalies_Detected
+Europe,Cloud Security,8176420.43,0.1122,6.56,30.66,Market Shift
+EMEA,Zero Trust,5938449.59,0.1032,32.71,18.07,Unusual Growth
+APAC,Threat Intelligence,8123066.43,0.1171,19.56,26.20,Unusual Growth
+EMEA,Endpoint Protection,8496392.52,0.0611,28.86,18.35,None
+EMEA,Cloud Security,5770730.85,0.1366,13.03,10.20,Revenue Spike
+LATAM,Zero Trust,8032377.24,0.1265,17.77,27.09,Revenue Spike
+APAC,Zero Trust,7874631.21,0.0325,17.34,30.41,None
+Europe,Cloud Security,7171164.99,0.0547,26.36,14.58,None
+LATAM,Threat Intelligence,2303926.97,0.0123,22.73,17.83,None
+Europe,Zero Trust,5485044.89,0.1059,33.04,24.83,Churn Anomaly
+LATAM,Cloud Security,6037467.74,0.0401,13.37,17.47,Churn Anomaly
+APAC,Zero Trust,8271152.78,0.0679,20.04,18.34,None
+Europe,Zero Trust,6634306.36,0.1131,24.17,21.76,None
+Europe,Zero Trust,4513268.67,0.1332,25.61,25.56,Revenue Spike
+North America,Cloud Security,5590390.98,0.0125,28.13,13.70,Revenue Spike
+Europe,Cloud Security,1669076.08,0.0423,6.84,22.78,None
+LATAM,Endpoint Protection,6099911.96,0.0789,15.80,22.46,Churn Anomaly
+EMEA,Zero Trust,1661829.74,0.0478,21.74,13.03,Revenue Spike
+LATAM,Cloud Security,4886447.11,0.0316,29.60,10.25,None
+EMEA,Threat Intelligence,1065970.91,0.0845,31.73,12.62,None
+EMEA,Threat Intelligence,2278120.15,0.0420,7.18,25.67,None
+APAC,Threat Intelligence,7025120.86,0.1273,16.92,18.75,None
+EMEA,Endpoint Protection,6433907.78,0.0667,15.51,17.33,None
+LATAM,Zero Trust,7540378.90,0.1132,31.47,23.22,Revenue Spike
+Europe,Threat Intelligence,6177619.77,0.1455,5.52,39.50,None
+APAC,Endpoint Protection,1010005.89,0.1424,24.59,29.78,None
+LATAM,Threat Intelligence,5796076.81,0.0268,23.81,21.82,None
+Europe,Threat Intelligence,3564494.02,0.1385,20.39,29.51,Unusual Growth
+Europe,Endpoint Protection,5268273.76,0.0542,14.65,36.39,Churn Anomaly
+Europe,Threat Intelligence,7672588.55,0.1132,12.84,31.84,None
+Europe,Threat Intelligence,6959683.25,0.0765,17.37,39.97,None
+APAC,Threat Intelligence,1081784.91,0.0599,23.77,14.05,None
+Europe,Endpoint Protection,2515592.05,0.0680,17.11,18.81,None
+EMEA,Cloud Security,3689375.57,0.1287,13.41,20.63,None
+APAC,Cloud Security,8327542.24,0.0650,9.20,34.42,None
+EMEA,Zero Trust,5180609.35,0.0496,28.79,39.76,Market Shift
+APAC,Endpoint Protection,7224814.58,0.0972,26.19,37.75,None
+APAC,Cloud Security,3801397.95,0.1320,22.46,32.12,Market Shift
+EMEA,Threat Intelligence,7166923.11,0.0235,22.61,27.96,None
+EMEA,Cloud Security,1076327.08,0.1228,29.91,27.86,None
+EMEA,Threat Intelligence,7669429.66,0.0257,34.99,18.38,None
+Europe,Zero Trust,2993417.44,0.0999,18.43,16.38,None
+Europe,Threat Intelligence,7684951.40,0.1268,7.74,32.20,Revenue Spike
+North America,Zero Trust,6367214.46,0.0965,31.68,21.74,Unusual Growth
+APAC,Zero Trust,7981671.53,0.0375,25.72,37.90,None
+LATAM,Endpoint Protection,5089584.13,0.0386,25.77,10.63,None
+EMEA,Zero Trust,6236493.41,0.0425,6.21,10.51,Unusual Growth
+APAC,Threat Intelligence,1371455.77,0.0636,7.76,21.49,Unusual Growth
+LATAM,Cloud Security,2083493.27,0.0118,18.76,35.37,None
+North America,Endpoint Protection,6503642.72,0.1345,12.87,26.23,None
+APAC,Cloud Security,6349044.57,0.0814,33.91,16.12,None
+APAC,Cloud Security,4855344.02,0.0562,34.37,34.09,Market Shift
+LATAM,Threat Intelligence,2558739.36,0.0631,29.15,11.99,Churn Anomaly
+Europe,Zero Trust,9001042.71,0.0363,32.89,33.66,Unusual Growth
+North America,Cloud Security,1745665.92,0.0821,32.74,26.09,Unusual Growth
+EMEA,Endpoint Protection,4117489.69,0.0155,15.71,39.53,None
+LATAM,Cloud Security,8214462.36,0.0196,15.56,39.85,None
+APAC,Threat Intelligence,7703378.21,0.0505,20.35,31.13,Churn Anomaly
+North America,Cloud Security,3856908.13,0.1214,28.90,29.66,None
+Europe,Cloud Security,8803703.39,0.0579,9.22,15.50,None
+EMEA,Cloud Security,7669379.55,0.0280,26.76,25.36,Market Shift
+LATAM,Cloud Security,3611511.29,0.1027,26.87,16.84,Revenue Spike
+LATAM,Cloud Security,3820209.69,0.0894,9.40,24.24,Churn Anomaly
+LATAM,Threat Intelligence,8203776.94,0.0608,25.42,11.05,None
+APAC,Cloud Security,5285552.24,0.1024,13.68,30.87,None
+LATAM,Endpoint Protection,2999557.79,0.1460,11.00,32.69,None
+LATAM,Zero Trust,6769569.92,0.1245,11.06,32.98,None
+North America,Zero Trust,4835292.49,0.0881,34.02,23.48,None
+APAC,Zero Trust,7581953.19,0.1389,11.68,20.04,None
+EMEA,Cloud Security,1822019.60,0.1441,29.84,33.97,Market Shift
+LATAM,Endpoint Protection,9255438.17,0.1133,29.51,20.00,Market Shift
+APAC,Threat Intelligence,8697590.06,0.0150,27.91,18.04,None
+EMEA,Threat Intelligence,9855122.78,0.0578,30.91,36.62,None
+North America,Endpoint Protection,1533495.54,0.0654,6.43,36.90,None
+North America,Cloud Security,2382376.37,0.0466,6.37,14.22,None
+North America,Threat Intelligence,5734808.28,0.0357,6.41,22.37,None
+Europe,Threat Intelligence,6308417.17,0.1005,18.71,27.04,Churn Anomaly
+LATAM,Cloud Security,1274957.03,0.1014,29.48,22.38,Churn Anomaly
+Europe,Endpoint Protection,1189771.80,0.0485,17.79,12.55,None
+Europe,Threat Intelligence,8079811.01,0.0475,28.84,27.39,None
+North America,Endpoint Protection,7538289.85,0.1133,8.47,14.37,Churn Anomaly
+EMEA,Endpoint Protection,4823285.00,0.0451,17.63,31.79,None
+APAC,Zero Trust,4424385.57,0.1360,31.53,26.89,Revenue Spike
+North America,Threat Intelligence,5981209.77,0.0335,7.84,19.90,None
+APAC,Threat Intelligence,7134250.10,0.0792,25.39,27.37,None
+EMEA,Threat Intelligence,8020034.74,0.0742,21.41,17.46,None
+LATAM,Zero Trust,9035992.30,0.0509,21.05,32.32,None
+EMEA,Threat Intelligence,7233361.30,0.1348,20.75,39.29,None
+APAC,Threat Intelligence,2313508.80,0.0588,12.01,36.61,Market Shift
+EMEA,Endpoint Protection,3640376.00,0.0955,10.24,33.97,Churn Anomaly
+EMEA,Zero Trust,5776931.35,0.0849,34.82,31.19,None
+APAC,Cloud Security,6398769.51,0.0845,10.68,34.87,None
+LATAM,Zero Trust,2757867.33,0.0747,23.84,38.58,None
+North America,Cloud Security,9292839.62,0.1010,32.43,22.12,None
+APAC,Endpoint Protection,3191311.29,0.0716,10.02,29.81,None
+APAC,Zero Trust,5288718.19,0.0888,6.20,39.52,None
+LATAM,Cloud Security,6578429.75,0.0542,22.28,14.55,Market Shift
+APAC,Endpoint Protection,1472498.12,0.0613,15.75,13.16,None
+APAC,Zero Trust,6753208.72,0.1064,26.11,10.27,None
+APAC,Threat Intelligence,3923285.67,0.0809,9.24,37.14,Churn Anomaly
+North America,Zero Trust,4924741.82,0.1149,7.32,28.35,None
+North America,Endpoint Protection,8382872.12,0.1268,20.30,39.49,None
+LATAM,Zero Trust,4750905.28,0.0924,8.44,34.86,Revenue Spike
+EMEA,Cloud Security,4735164.57,0.0745,8.04,31.01,None
+Europe,Cloud Security,2782523.62,0.1101,19.10,32.95,Market Shift
+EMEA,Cloud Security,1368218.90,0.0850,32.87,20.54,None
+EMEA,Zero Trust,9385242.91,0.1213,11.93,17.80,None
+APAC,Zero Trust,1556622.46,0.0303,12.74,16.43,None
+APAC,Endpoint Protection,8804543.66,0.0143,33.09,13.31,None
+North America,Threat Intelligence,7370830.32,0.0642,21.29,33.24,None
+Europe,Threat Intelligence,1863430.96,0.0156,29.53,29.36,None
+EMEA,Threat Intelligence,6682187.78,0.0769,14.11,31.72,None
+APAC,Zero Trust,9047233.77,0.0104,16.02,17.30,Churn Anomaly
+Europe,Endpoint Protection,7560506.03,0.1015,14.98,25.13,Market Shift
+Europe,Cloud Security,8943027.96,0.0318,33.16,13.05,Market Shift
+North America,Endpoint Protection,9981150.17,0.0137,16.57,13.80,Market Shift
+LATAM,Endpoint Protection,4138236.77,0.0794,19.87,17.58,Churn Anomaly
+APAC,Zero Trust,6834640.59,0.1012,32.16,15.22,None
+Europe,Endpoint Protection,9093914.19,0.1043,7.14,36.48,Churn Anomaly
+EMEA,Cloud Security,8704505.99,0.0284,24.83,11.94,Unusual Growth
+North America,Threat Intelligence,8153434.55,0.0413,12.08,15.18,Revenue Spike
+Europe,Threat Intelligence,9443740.03,0.0980,16.60,28.84,Churn Anomaly
+North America,Zero Trust,7538846.15,0.1484,7.66,26.55,Unusual Growth
+Europe,Threat Intelligence,9224354.71,0.1194,33.72,18.39,Revenue Spike
+LATAM,Zero Trust,2042557.97,0.1114,16.92,28.79,Unusual Growth
+Europe,Zero Trust,8762013.92,0.0961,32.57,15.21,Revenue Spike
+Europe,Cloud Security,6494109.10,0.1195,32.08,33.67,Churn Anomaly
+LATAM,Zero Trust,5710262.58,0.0715,6.74,31.88,None
+APAC,Endpoint Protection,4855156.81,0.1412,6.80,39.09,None
+EMEA,Zero Trust,1386203.84,0.1386,27.38,13.13,Market Shift
+LATAM,Endpoint Protection,1612109.71,0.1122,8.46,28.72,Churn Anomaly
+EMEA,Zero Trust,5284230.67,0.0337,17.01,38.76,Market Shift
+Europe,Endpoint Protection,9965992.80,0.0745,29.61,30.98,Market Shift
+APAC,Zero Trust,3716874.14,0.0178,9.26,10.92,None
+LATAM,Endpoint Protection,2022661.80,0.1355,20.88,39.75,Churn Anomaly
+APAC,Threat Intelligence,8093365.44,0.1387,17.32,39.55,None
+LATAM,Threat Intelligence,1899398.53,0.0437,18.57,18.00,Unusual Growth
+APAC,Cloud Security,1934441.00,0.0221,29.45,38.91,None
+North America,Threat Intelligence,3297053.38,0.0519,26.13,33.49,None
+North America,Cloud Security,6491390.06,0.0109,13.44,13.82,None
+LATAM,Endpoint Protection,1007667.73,0.1012,31.86,32.60,None
+LATAM,Threat Intelligence,8301561.85,0.0237,11.42,33.03,Revenue Spike
+North America,Zero Trust,3705713.45,0.1197,15.00,28.30,None
+LATAM,Cloud Security,2785277.96,0.1246,23.60,17.93,None
+APAC,Endpoint Protection,6752319.46,0.1152,11.03,30.84,None
+LATAM,Zero Trust,3121025.45,0.0227,9.84,38.35,Unusual Growth
+North America,Cloud Security,5122800.53,0.0936,21.14,38.48,Market Shift
+APAC,Threat Intelligence,5506962.41,0.1231,6.82,30.62,Revenue Spike
+Europe,Endpoint Protection,5267994.56,0.1254,9.52,26.18,Revenue Spike
+APAC,Endpoint Protection,8470749.18,0.0330,5.72,26.32,None
